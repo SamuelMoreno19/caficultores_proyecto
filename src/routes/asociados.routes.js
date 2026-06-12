@@ -53,7 +53,17 @@ router.post("/", (req, res) => {
 
 // Listar asociados
 router.get("/", (req, res) => {
-    res.json(listarAsociados());
+
+    const { estado } = req.query;
+    let lista = listarAsociados();
+
+    if (estado) {
+        lista = lista.filter(
+            a => a.estado === estado
+        );
+    }
+
+    res.json(lista);
 });
 
 

@@ -14,17 +14,23 @@ function crearFinca(finca) {
     );
 
     if (existe) {
-        throw new Error(
-            "Ya existe una finca con ese código"
-        );
+        throw new Error("Ya existe una finca con ese código");
     }
 
     fincas.push(finca);
+    guardarDatos(ARCHIVO, fincas);
 
-    guardarDatos(
-        ARCHIVO,
-        fincas
+    // Actualizar numeroDeFincas del asociado
+    const asociados = leerDatos("asociados.json");
+    const asociado = asociados.find(
+        a => a.identificacion === finca.asociadoId
     );
+
+    if (asociado) {
+        asociado.numeroDeFincas =
+            (asociado.numeroDeFincas || 0) + 1;
+        guardarDatos("asociados.json", asociados);
+    }
 
     return finca;
 }
@@ -78,17 +84,23 @@ function eliminarFinca(codigo) {
     );
 
     if (indice === -1) {
-        throw new Error(
-            "Finca no encontrada"
-        );
+        throw new Error("Finca no encontrada");
     }
 
+    const finca = fincas[indice];
     fincas.splice(indice, 1);
+    guardarDatos(ARCHIVO, fincas);
 
-    guardarDatos(
-        ARCHIVO,
-        fincas
+    // Actualizar numeroDeFincas del asociado
+    const asociados = leerDatos("asociados.json");
+    const asociado = asociados.find(
+        a => a.identificacion === finca.asociadoId
     );
+
+    if (asociado && asociado.numeroDeFincas > 0) {
+        asociado.numeroDeFincas -= 1;
+        guardarDatos("asociados.json", asociados);
+    }
 
     return true;
 }

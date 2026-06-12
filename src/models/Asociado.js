@@ -10,6 +10,7 @@ class Asociado {
         this.nombre = nombre;
         this.telefono = telefono;
         this.aniosCaficultor = aniosCaficultor;
+        this.numeroDeFincas = 0;
         this.estado = estado;
     }
 }
