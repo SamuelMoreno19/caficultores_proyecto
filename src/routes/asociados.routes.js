@@ -118,7 +118,7 @@ router.delete("/:id", (req, res) => {
 
     } catch (error) {
 
-        res.status(404).json({
+        res.status(400).json({
             mensaje: error.message
         });
 
